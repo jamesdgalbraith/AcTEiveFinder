@@ -27,7 +27,7 @@ if (any(is.null(opt))){
 s_name=opt$species_name
 g_name=opt$genome_name
 
-setwd(paste("~/fastdir/BirdCarp/",s_name,sep=""))
+setwd(paste("~/fastdir/InsectCarp/",s_name,sep=""))
 
 # Read in hmmer data
 hmmscan_out = read_domtblout(file = paste(s_name , "_ORFs.fasta.out", sep="")) %>%

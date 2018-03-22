@@ -28,15 +28,15 @@ g_name=opt$genome_name
 
 
 # Need check for if CARP folder and fais + igor exist
-if (!file.exists(paste('~/fastdir/BirdCarp/', s_name, sep=""))){
+if (!file.exists(paste('~/fastdir/InsectCarp/', s_name, sep=""))){
   stop("folder containg CARP data doesn't exist", call.=FALSE)
 }
 
-setwd(paste('~/fastdir/BirdCarp/', s_name, sep=""))
+setwd(paste('~/fastdir/InsectCarp/', s_name, sep=""))
 
 if (!file.exists(paste(s_name, "_Denovo_TE_Library.fasta.fai", sep = "")) | 
     !file.exists(paste(s_name, ".igor.gff", sep = "")) | 
-    !file.exists(paste('~/fastdir/BirdGenomes/', s_name, '/', g_name, ".fai", sep = ""))
+    !file.exists(paste('~/fastdir/InsectGenomes/', s_name, '/', g_name, ".fai", sep = ""))
     ){
   stop("gff and/or fais doesn't exist", call.=FALSE)
 }
@@ -49,7 +49,7 @@ fai <- read_tsv(paste(s_name, "_Denovo_TE_Library.fasta.fai", sep = ""),
   mutate(family = gsub(pattern = "family", replacement = "", x = family)) %>%
   mutate(family = as.integer(gsub(pattern = "_consensus", replacement = "", x = family)))
 
-genome_fai <- read_tsv( paste('~/fastdir/BirdGenomes/', s_name, '/', g_name, ".fai", sep = ""),
+genome_fai <- read_tsv( paste('~/fastdir/InsectGenomes/', s_name, '/', g_name, ".fai", sep = ""),
                         col_names = c("contig", "length", 1:3)) %>%
   select(-c(3:5))
 
