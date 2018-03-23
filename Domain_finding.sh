@@ -25,7 +25,7 @@ Rscript --vanilla ~/fastdir/InsectCarp/scripts/AcTEiveFinder/Domain_finding.R --
 bedtools getfasta -name -fi ~/fastdir/InsectGenomes/${SPECIES}/${GENOME} -bed ${SPECIES}_repeats.bed -fo ${SPECIES}_repeats.fasta
 
 # Search potential repeat sequences for ORFs
-usearch -fastx_findorfs ${SPECIES}/${SPECIES}_repeats.fasta -aaout ${SPECIES}/${SPECIES}_TEs_ORFs.fasta -orfstyle 7 -mincodons 300
+usearch -fastx_findorfs ${SPECIES}_repeats.fasta -aaout ${SPECIES}/${SPECIES}_TEs_ORFs.fasta -orfstyle 7 -mincodons 300
 
 # Identify protein motifs in said repeats
 hmmscan --domtblout ${SPECIES}_TEs_ORFs.out ~/fastdir/krishna_databases/Pfam-A.hmm ${SPECIES}_TEs_ORFs.fasta > ${SPECIES}_TEs_ORFs.log
