@@ -18,13 +18,13 @@ echo "Beginning Domain finding on " ${SPECIES}
 # Example usage: SPECIES=Gallus_gallus GENOME=GRCg6.fasta sbatch Domain_finding.sh
 
 # Check for necesary files
-if [ -s ~/fastdir/Genomes/${SPECIES}/${GENOME} ]; then
+if [ ! -s ~/fastdir/Genomes/${SPECIES}/${GENOME} ]; then
     echo ${SPECIES} " genome not found"; exit
 fi
-if [ -s ~/fastdir/Carp/${SPECIES}/${SPECIES}_Denovo_TE_Library.fasta ]; then
+if [ ! -s ~/fastdir/Carp/${SPECIES}/${SPECIES}_Denovo_TE_Library.fasta ]; then
     echo "TE library not present or empty "${SPECIES}; exit
 fi
-if [ -s ~/fastdir/Carp/${SPECIES}/${SPECIES}.igor.gff ]; then
+if [ ! -s ~/fastdir/Carp/${SPECIES}/${SPECIES}.igor.gff ]; then
     echo "No repeats identified in "${SPECIES}; exit
 fi
 
@@ -35,7 +35,7 @@ cd ~/fastdir/Carp/${SPECIES}
 Rscript --vanilla ~/fastdir/Carp/scripts/AcTEiveFinder/Domain_finding.R --species ${SPECIES} --genome ${GENOME}
 
 # Check for bed length
-if [ -s ${SPECIES}_repeats.bed ]; then
+if [ ! -s ${SPECIES}_repeats.bed ]; then
     echo "No repeats identified in "${SPECIES}; exit
 fi
 
@@ -43,7 +43,7 @@ fi
 bedtools getfasta -fi ~/fastdir/Genomes/${SPECIES}/${GENOME} -bed ${SPECIES}_repeats.bed -fo ${SPECIES}_repeats.fasta
 
 # Check for repeat fasta
-if [ -s ${SPECIES}_repeats.fasta ]; then
+if [ ! -s ${SPECIES}_repeats.fasta ]; then
     echo "bedtools did not make fasta "${SPECIES}; exit
 fi
 
@@ -51,7 +51,7 @@ fi
 usearch -fastx_findorfs ${SPECIES}_repeats.fasta -aaout ${SPECIES}_TEs_ORFs.fasta -orfstyle 7 -mincodons 300
 
 # Check for ORF fasta
-if [ -s ${SPECIES}_TEs_ORFs.fasta ]; then
+if [ ! -s ${SPECIES}_TEs_ORFs.fasta ]; then
     echo "No repeat ORFs identified in "${SPECIES}; exit
 fi
 
