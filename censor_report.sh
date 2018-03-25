@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script to run censor on first stage output
+
 #SBATCH -p batch
 #SBATCH -N 1
 #SBATCH -n 16
@@ -26,19 +28,23 @@ if [ ! -s consensus.fasta ]; then
     echo "Genome not found"; exit
 fi
 
+# Run censor
 censor -bprm cpus=16 -lib ~/fastdir/krishna_databases/repbase_eukaryote.fa ~/fastdir/Carp/${SPECIES}/consensus.fasta
 
 echo "Ended censor " ${SPECIES}
 echo "Started classification " ${SPECIES}
 date
 
+# Classify sequences as repeats or not epeats
 cd ~/fastdir/Carp/scripts 
 java ClassifyConsensusSequences ${SPECIES}
 
 echo "Ended classification " ${SPECIES}
 
+# Queue blasts
 cd /home/a1194388/fastdir/Carp/slurms/blasts
-SPECIES=${SPECIES} sbatch /home/a1194388/fastdir/Carp/scripts/gb_te_report.sh
-SPECIES=${SPECIES} sbatch /home/a1194388/fastdir/Carp/scripts/uniprot_report.sh
-SPECIES=${SPECIES} sbatch /home/a1194388/fastdir/Carp/scripts/retrovirus_report.sh
+SPECIES=${SPECIES} sbatch ~/fastdir/Carp/scripts/gb_te_report.sh
+SPECIES=${SPECIES} sbatch ~/fastdir/Carp/scripts/uniprot_report.sh
+SPECIES=${SPECIES} sbatch ~/fastdir/Carp/scripts/retrovirus_report.sh
 echo "Queued database searches " ${SPECIES}
+date
