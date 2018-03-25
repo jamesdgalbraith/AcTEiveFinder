@@ -42,14 +42,18 @@ rm -r split/
 # Compile all gffs  into one big gff
 echo "Compiling gffs"
 find . -maxdepth 1 -name '[!.]*.gff' -print0 | xargs -r0 cat > ${SPECIES}.gff
+
+# Move logs and matrix gffs into their own folder
 mkdir -p gffs/
 mv ${GENOME}*gff gffs/
+mkdir -p logs
+mv *.log logs/
 
 echo ""
 echo "Ended matrix " $SPECIES
 date
 
-# Queue next 
+# Queue next step
 cd ~/fastdir/Carp/slurms/igor
 SPECIES=${SPECIES} GENOME=${GENOME} sbatch ~/fastdir/Carp/scripts/igor.sh
 echo "Queued igor"
